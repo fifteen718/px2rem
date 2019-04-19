@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>px2rem</title>
+    <style>
+        #app {
+            font-size: 16px;
+            text-align: center;
+        }
+
+        input {
+            width: 120px;
+            height: 26px;
+            font-size: 16px;
+            border: 1px solid #dcdcdc;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #82acff;
+        }
+
+        #remValue {
+            display: inline-block;
+            width: 90px;
+            line-height: 28px;
+            color: blue;
+        }
+
+        #remValue:hover {
+            color: #82acff;
+        }
+
+        #remValue:active {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h2>px2rem 换算器</h2>
+        <div>
+            <input v-model="pxValue" type="number"> px
+            ➗
+            <input v-model="DValue" type="number"> px/rem
+            =
+            <label id="remValue" @click="copyRemValue">{{ getRemValue() }}</label> rem
+        </div>
+        <div><input id="copyValue" v-model="remValue" style="opacity: 0;"></div>
+    </div>
+
+    <script src="./vue.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                pxValue: '',
+                DValue: '37.5',
+                remValue: ''
+            },
+            methods: {
+                getRemValue: function () {
+                    let val = Number(this.pxValue) / Number(this.DValue)
+                    let dotNum = val.toString().split('.')[1]
+                    this.remValue = (dotNum && dotNum.length > 3) ? val.toFixed(3) : val
+                    return this.remValue
+                },
+                copyRemValue: function () {
+                    document.getElementById("copyValue").select()
+                    document.execCommand("Copy")
+                    console.log('copy success!')
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

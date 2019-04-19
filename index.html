@@ -6,6 +6,7 @@
     <title>px2rem</title>
     <style>
         #app {
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", sans-serif;
             font-size: 16px;
             text-align: center;
         }
@@ -19,22 +20,76 @@
         }
 
         input:focus {
-            border-color: #82acff;
+            border-color: #66b1ff;
         }
 
         #remValue {
             display: inline-block;
-            width: 90px;
+            width: 80px;
             line-height: 28px;
             color: blue;
         }
 
         #remValue:hover {
-            color: #82acff;
+            color: #66b1ff;
         }
 
         #remValue:active {
             color: blue;
+        }
+
+        .myButton {
+            color: white;
+            font-size: 14px;
+            display: inline-block;
+            width: 96px;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            margin: 0 12px;
+            cursor: pointer;
+            transition: .1s;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            border-radius: 4px;
+        }
+
+        .addButton {
+            background: #409eff;
+        }
+
+        .addButton:hover {
+            background: #66b1ff;
+        }
+
+        .addButton:active {
+            background: #3a8ee6;
+        }
+
+        .clearButtonn {
+            background: #f56c6c;
+        }
+
+        .clearButtonn:hover {
+            background: #f78989;
+        }
+
+        .clearButtonn:active {
+            background: #dd6161;
+        }
+
+        #cacheList {
+            list-style-type: none;
+        }
+
+        #cacheList li {
+            height: 28px;
+            line-height: 28px;
+        }
+
+        #cacheList li:nth-child(odd) {
+            background: #efefef;
         }
     </style>
 </head>
@@ -47,9 +102,18 @@
             ➗
             <input v-model="DValue" type="number"> px/rem
             =
-            <label id="remValue" @click="copyRemValue">{{ getRemValue() }}</label> rem
+            <label id="remValue" @click="copyRemValue" title="点我一下就可以复制了哟~">{{ getRemValue() }}</label> rem
         </div>
         <div><input id="copyValue" v-model="remValue" style="opacity: 0;"></div>
+        <div>
+            <label class="myButton addButton" @click="addStorage">添加缓存</label>
+            <label class="myButton clearButtonn" @click="clearStorage">清除缓存</label>
+        </div>
+        <ul id="cacheList">
+            <li v-for="item in rems">
+                {{ item }}
+            </li>
+        </ul>
     </div>
 
     <script src="./vue.min.js"></script>
@@ -59,7 +123,21 @@
             data: {
                 pxValue: '',
                 DValue: '37.5',
-                remValue: ''
+                remValue: '',
+                rems: [
+                    '12 / 37.5 = 0.32',
+                    '14 / 37.5 = 0.373',
+                    '15 / 37.5 = 0.4',
+                    '16 / 37.5 = 0.427',
+                    '18 / 37.5 = 0.48',
+                ]
+            },
+            created() {
+                if (localStorage.rems) {
+                    this.rems = localStorage.rems.split(',')
+                } else {
+                    localStorage.setItem('rems', this.rems)
+                }
             },
             methods: {
                 getRemValue: function () {
@@ -72,6 +150,15 @@
                     document.getElementById("copyValue").select()
                     document.execCommand("Copy")
                     console.log('copy success!')
+                },
+                addStorage: function () {
+                    let newItem = `${this.pxValue} / ${this.DValue} = ${this.remValue}`
+                    this.rems.push(newItem)
+                    localStorage.setItem('rems', this.rems)
+                },
+                clearStorage: function () {
+                    this.rems = []
+                    localStorage.removeItem('rems')
                 }
             }
         })

@@ -36,7 +36,7 @@
                 // 纯数字
                 let val = (transType === 'px') ? Number(str) / Number(diffValue) : Number(str) * Number(diffValue)
                 let dotNum = val.toString().split('.')[1]
-                let formatVal = (dotNum && dotNum.length > 3) ? val.toFixed(3) : val
+                let formatVal = (dotNum && dotNum.length > 7) ? val.toFixed(7) : val
                 newStr = formatVal
             } else {
                 // 非纯数字
@@ -47,7 +47,7 @@
                     } else {
                         let val = (transType === 'px') ? Number(numText) / Number(diffValue) : Number(numText) * Number(diffValue)
                         let dotNum = val.toString().split('.')[1]
-                        let formatVal = (dotNum && dotNum.length > 3) ? val.toFixed(3) : val
+                        let formatVal = (dotNum && dotNum.length > 7) ? val.toFixed(7) : val
                         newStr = str.slice(0, i + 1) + formatVal
                         break
                     }
